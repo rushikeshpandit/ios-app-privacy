@@ -1,0 +1,455 @@
+[
+    {
+        "id": "1",
+        "label" : "Privacy tracking.",
+        "hint" : "NSPrivacyTracking Indicates whether your app or third-party SDK uses data for tracking as defined under the App Tracking Transparency framework. For more information, see User Privacy and Data Use.",
+        "btn_title": "Your app uses data for tracking"
+    },
+    {
+        "id": "2",
+        "label" : "Tracking domains.",
+        "hint" : "NSPrivacyTrackingDomains A list of the internet domains your app or third-party SDK connects to that engage in tracking. If the user has not granted tracking permission through the App Tracking Transparency framework, network requests to these domains fail and your app receives an error. If you set NSPrivacyTracking to true then you need to provide at least one internet domain in NSPrivacyTrackingDomains; otherwise, you can provide zero or more domains.",
+        "btn_title": "Add tracking domain"
+    },
+    {
+        "id": "3",
+        "label" : "/'Required Reason/' APIs.",
+        "hint" : "NSPrivacyAccessedAPITypes An array of dictionaries that describe the API types your app or third-party SDK accesses that have been designated as APIs that require reasons to access. For information on the keys and values to use in the dictionaries, see Describing use of required reason API.",
+        "btn_title": "Add /'Required Reason/' API type",
+        "api_type" : [
+            {
+                "id": "api_type-31",
+                "value": "NSPrivacyAccessedAPICategoryFileTimestamp",
+                "type": "File timestamp APIs",
+                "Reasons": [
+                    {
+                        "id": "file-1",
+                        "key": "DDA9.1",
+                        "value": "Display timestamps to user"
+                    },
+                    {
+                        "id": "file-2",
+                        "key": "C617.1",
+                        "value": "Access timestamps inside the app container"
+                    },
+                    {
+                        "id": "file-3",
+                        "key": "3B52.1",
+                        "value": "Access timestamps specifically granted by user"
+                    },
+                    {
+                        "id": "file-4",
+                        "key": "0A2A.1",
+                        "value": "Third party SDK provides a wrapper function"
+                    }
+                ]
+            },
+            {
+                "id": "api_type-32",
+                "type": "System boot time APIs",
+                "value": "NSPrivacyAccessedAPICategorySystemBootTime",
+                "Reasons": [
+                    {
+                        "id": "system-1",
+                        "key": "35F9.1",
+                        "value": "Measure time between events / enable timers"
+                    },
+                    {
+                        "id": "system-2",
+                        "key": "8FFB.1",
+                        "value": "Calculate timestamps within the app"
+                    },
+                    {
+                        "id": "system-3",
+                        "key": "3D61.1",
+                        "value": "Include timestamps in user-submitted bug reports"
+                    }
+                ]
+            },
+            {
+                "id": "api_type-33",
+                "type": "Disk space APIs",
+                "value": "NSPrivacyAccessedAPICategoryDiskSpace",
+                "Reasons": [
+                    {
+                        "id": "disk-1",
+                        "key": "85F4.1",
+                        "value": "Display disk space to user"
+                    },
+                    {
+                        "id": "disk-2",
+                        "key": "E174.1",
+                        "value": "Check for sufficient disk space to write files"
+                    },
+                    {
+                        "id": "disk-3",
+                        "key": "7D9E.1",
+                        "value": "Including disk space information in user-submitted bug reports"
+                    },
+                    {
+                        "id": "disk-4",
+                        "key": "B728.1",
+                        "value": "Health research app; check for disk space to store collected data"
+                    }
+                ]
+            },
+            {
+                "id": "api_type-34",
+                "type": "Active keyboard APIs",
+                "value": "NSPrivacyAccessedAPICategoryActiveKeyboards",
+                "Reasons": [
+                    {
+                        "id": "keyboard-1",
+                        "key": "3EC4.1",
+                        "value": "Custom keyboard app; determine keyboards active on device"
+                    },
+                    {
+                        "id": "keyboard-2",
+                        "key": "54BD.1",
+                        "value": "Present correct customised UI"
+                    }
+                ]
+            },
+            {
+                "id": "api_type-35",
+                "type": "User defaults APIs",
+                "value": "NSPrivacyAccessedAPICategoryUserDefaults",
+                "Reasons": [
+                    {
+                        "id": "defaults-1",
+                        "key": "CA92.1",
+                        "value": "Read / write information accessible only by the app"
+                    },
+                    {
+                        "id": "defaults-2",
+                        "key": "1C8F.1",
+                        "value": "Read / write information accessible only within the app group"
+                    },
+                    {
+                        "id": "defaults-3",
+                        "key": "C56D.1",
+                        "value": "Third party SDK provides a wrapper function"
+                    },
+                    {
+                        "id": "defaults-4",
+                        "key": "AC6B.1",
+                        "value": "Read the com.apple.configuration.managed key for MDM configuration"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "4",
+        "label" : "Collected data types.",
+        "hint" : "NSPrivacyCollectedDataTypes An array of dictionaries that describes the data types your app or third-party SDK collects. For information on the keys and values to use in the dictionaries, see Describing data use in privacy manifests.",
+        "btn_title": "Add collected data type",
+        "api_type" : [
+            {
+                "id": "collected-41",
+                "label": "Contact info",
+                "options": [
+                    {
+                        "id": "contact-1",
+                        "label": "label",   
+                        "key":"NSPrivacyCollectedDataTypelabel"
+                    }, 
+                    {
+                        "id": "contact-2",
+                        "label": "Email address",
+                        "key":"NSPrivacyCollectedDataTypeEmailAddress"
+                    },
+                    {
+                        "id": "contact-3",
+                        "label": "Phone number",
+                        "key": "NSPrivacyCollectedDataTypePhoneNumber"
+                    },
+                    {
+                        "id": "contact-4",
+                        "label": "Physical address",
+                        "key": "NSPrivacyCollectedDataTypePhysicalAddress"
+                    },
+                    {
+                        "id": "contact-5",
+                        "label": "Other user contact info",
+                        "key": "NSPrivacyCollectedDataTypeOtherUserContactInfo"
+                    }
+                ]
+            },
+            {
+                "id": "collected-42",
+                "label": "Health &amp; fitness",
+                "options": [
+                    {
+                        "id": "health-1",
+                        "label": "Health",
+                        "key": "NSPrivacyCollectedDataTypeHealth"
+                    },
+                    {
+                        "id": "health-2",
+                        "label": "Fitness",
+                        "key": "NSPrivacyCollectedDataTypeFitness"
+                    }
+                    
+                ]
+            },
+            {
+                "id": "collected-43",
+                "label": "Financial info",
+                "options": [
+                    {
+                        "id": "financial-1",
+                        "label": "Payment info",
+                        "key": "NSPrivacyCollectedDataTypePaymentInfo"
+                    },
+                    {
+                        "id": "financial-2",
+                        "label": "Credit info",
+                        "key": "NSPrivacyCollectedDataTypeCreditInfo"
+                    },
+                    {
+                        "id": "financial-3",
+                        "label": "Other financial info",
+                        "key": "NSPrivacyCollectedDataTypeOtherFinancialInfo"
+                    }
+                ]
+            },
+            {
+                "id": "collected-44",
+                "label": "Location",
+                "options": [
+                    {
+                        "id": "location-1",
+                        "label": "Precise location",
+                        "key": "NSPrivacyCollectedDataTypePreciseLocation"
+                    },
+                    {
+                        "id": "location-2",
+                        "label": "Coarse location",
+                        "key": "NSPrivacyCollectedDataTypeCoarseLocation"
+                    }
+                ]
+            },
+            {
+                "id": "collected-45",
+                "label": "Sensitive info",
+                "options": [
+                    {
+                        "id": "sensitive-1",
+                        "label": "Sensitive info",
+                        "key": "NSPrivacyCollectedDataTypeSensitiveInfo"
+                    }
+                ]
+            },
+            {
+                "id": "collected-46",
+                "label": "Contacts",
+                "options": [
+                    {
+                        "id": "contact-1",
+                        "label": "Contacts",
+                        "key": "NSPrivacyCollectedDataTypeContacts"
+                    }
+                ]
+            },
+            {
+                "id": "collected-47",
+                "label": "User content",
+                "options": [
+                    {
+                        "id": "user-1",
+                        "label": "Emails or text messages",
+                        "key": "NSPrivacyCollectedDataTypeEmailsOrTextMessages"
+                    },
+                    {
+                        "id": "user-2",
+                        "label": "Photos or videos",
+                        "key": "NSPrivacyCollectedDataTypePhotosorVideos"
+                    },
+                    {
+                        "id": "user-3",
+                        "label": "Audio data",
+                        "key": "NSPrivacyCollectedDataTypeAudioData"
+                    },
+                    {
+                        "id": "user-4",
+                        "label": "Gameplay content",
+                        "key": "NSPrivacyCollectedDataTypeGameplayContent"
+                    },
+                    {
+                        "id": "user-5",
+                        "label": "Customer support",
+                        "key": "NSPrivacyCollectedDataTypeCustomerSupport"
+                    },
+                    {
+                        "id": "user-6",
+                        "label": "Other user content",
+                        "key": "NSPrivacyCollectedDataTypeOtherUserContent"
+                    }
+                ]
+            },
+            {
+                "id": "collected-48",
+                "label": "Browsing history",
+                "options": [
+                    {
+                        "id": "browsing-1",
+                        "label": "Browsing history",
+                        "key": "NSPrivacyCollectedDataTypeBrowsingHistory"
+                    }
+                ]
+            },
+            {
+                "id": "collected-49",
+                "label": "Search history",
+                "options": [
+                    {
+                        "id": "searching-1",
+                        "label": "Search history",
+                        "key": "NSPrivacyCollectedDataTypeSearchHistory"
+                    }
+                ]
+            },
+            {
+                "id": "collected-410",
+                "label": "Identifiers",
+                "options": [
+                    {
+                        "id": "identifier-1",
+                        "label": "User ID",
+                        "key": "NSPrivacyCollectedDataTypeUserID"
+                    },
+                    {
+                        "id": "identifier-2",
+                        "label": "Device ID",
+                        "key": "NSPrivacyCollectedDataTypeDeviceID"
+                    }
+                ]
+            },
+            {
+                "id": "collected-411",
+                "label": "Purchases",
+                "options": [
+                    {
+                        "id": "purchase-1",
+                        "label": "Purchase history",
+                        "key": "NSPrivacyCollectedDataTypePurchaseHistory"
+                    }
+                ]
+            },
+            {
+                "id": "collected-412",
+                "label": "Usage data",
+                "options": [
+                    {
+                        "id": "usage-1",
+                        "label": "Product interaction",
+                        "key": "NSPrivacyCollectedDataTypeProductInteraction"
+                    },
+                    {
+                        "id": "usage-2",
+                        "label": "Advertising data",
+                        "key": "NSPrivacyCollectedDataTypeAdvertisingData"
+                    },
+                    {
+                        "id": "usage-3",
+                        "label": "Other usage data",
+                        "key": "NSPrivacyCollectedDataTypeOtherUsageData"
+                    }
+                ]
+            },
+            {
+                "id": "collected-413",
+                "label": "Diagnostics",
+                "options": [
+                    {
+                        "id": "diagnostic-1",
+                        "label": "Crash data",
+                        "key": "NSPrivacyCollectedDataTypeCrashData"
+                    },
+                    {
+                        "id": "diagnostic-2",
+                        "label": "Performance data",
+                        "key": "NSPrivacyCollectedDataTypePerformanceData"
+                    },
+                    {
+                        "id": "diagnostic-3",
+                        "label": "Other diagnostic data",
+                        "key": "NSPrivacyCollectedDataTypeOtherDiagnosticData"
+                    }
+                    
+                ]
+            },
+            {
+                "id": "collected-414",
+                "label": "Surroundings",
+                "options": [
+                    {
+                        "id": "surrounding-1",
+                        "label": "Environment scanning",
+                        "key": "NSPrivacyCollectedDataTypeEnvironmentScanning"
+                    }
+                ]
+            },
+            {
+                "id": "collected-415",
+                "label": "Body",
+                "options": [
+                    {
+                        "id": "body-1",
+                        "label": "Hands",
+                        "key": "NSPrivacyCollectedDataTypeHands"
+                    },
+                    {
+                        "id": "body-2",
+                        "label": "Head",
+                        "key": "NSPrivacyCollectedDataTypeHead"
+                    }
+                ]
+            },
+            {
+                "id": "collected-416",
+                "label": "Other data types",
+                "options": [
+                    {
+                        "id": "other-1",
+                        "label": "Other data types",
+                        "key": "NSPrivacyCollectedDataTypeOtherDataTypes"
+                    }
+                ]
+            }
+        ],
+        "purpose": [
+            {
+                "id": "purpose-1",
+                "label": "3rd party ads",
+                "value":"NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising"
+            },
+            {
+                "id": "purpose-2",
+                "label": "Developer ads",
+                "value": "NSPrivacyCollectedDataTypePurposeDeveloperAdvertising"
+            },
+            {
+                "id": "purpose-3",
+                "label": "Analytics",
+                "value": "NSPrivacyCollectedDataTypePurposeAnalytics"
+            },
+            {
+                "id": "purpose-4",
+                "label": "Personalization",
+                "value": "NSPrivacyCollectedDataTypePurposeProductPersonalization"
+            },
+            {
+                "id": "purpose-5",
+                "label": "App functionality",
+                "value": "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            },
+            {
+                "id": "purpose-6",
+                "label": "Other",
+                "value": "NSPrivacyCollectedDataTypePurposeOther"
+            }
+        ]
+    }
+]
