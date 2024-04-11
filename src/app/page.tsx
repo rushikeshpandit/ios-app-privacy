@@ -4,19 +4,31 @@ import { useState } from "react";
 import MainHint from "./MainHint";
 import SubHint from "./SubHint";
 import { Checkbox } from "@nextui-org/react";
+import {
+	Dropdown,
+	DropdownTrigger,
+	DropdownMenu,
+	DropdownItem,
+	Button,
+} from "@nextui-org/react";
 
+interface reason {
+	id: string;
+	key: string;
+	value: string;
+}
+
+interface api_type {
+	id: string;
+	value: string;
+	type: string;
+	reasons: reason[];
+}
 interface ds {
 	id: string;
 	label: string;
 	hint: string;
-	api_type?:
-		| {
-				id: string;
-				value: string;
-				type: string;
-				Reasons: { id: string; key: string; value: string }[];
-		  }[]
-		| any;
+	api_type?: api_type[] | any;
 	btn_title?: any | undefined;
 	purpose?: any | undefined;
 }
@@ -27,6 +39,8 @@ export default function Home() {
 	const [subHintID, setSubHintID] = useState("");
 	const [privacyTrackingEnabled, setPrivacyTrackingEnabled] = useState(false);
 	const [trackingDomains, setTrackingDomains] = useState([{ domain: "" }]);
+	const [apiTypes, setApiTypes] = useState<api_type[]>([]);
+	const [reasons, setReasons] = useState<reason[]>([]);
 
 	let handleChange = (i: number, e: any) => {
 		let newTrackingDomains = [...trackingDomains];
@@ -35,9 +49,7 @@ export default function Home() {
 	};
 
 	let addTrackingDomains = () => {
-		let newTrackingDomains = [...trackingDomains];
-		newTrackingDomains.push({ domain: "" });
-		setTrackingDomains(newTrackingDomains);
+		setTrackingDomains([...trackingDomains, { domain: "" }]);
 	};
 
 	let removeTrackingDomains = (i: number) => {
@@ -80,7 +92,7 @@ export default function Home() {
 	function renderHintButton(id: string, hint: string) {
 		return (
 			<button
-				title="_"
+				title="?"
 				type="button"
 				onClick={() => toggleSubHintView(id, hint)}
 				className="fixed left-0 top-0 flex justify-center pb-6 pt-8 backdrop-blur-2xl lg:static Ig:w-auto Lgrounded-xl lg:p-4 "
@@ -136,7 +148,7 @@ export default function Home() {
 											onChange={(e) => handleChange(index, e)}
 										/>
 										<button
-											title="_"
+											title="?"
 											type="button"
 											className="button remove"
 											onClick={() => removeTrackingDomains(index)}
@@ -166,6 +178,58 @@ export default function Home() {
 							<p className="h-auto w-auto text-white">{data.btn_title}</p>
 						</button>
 					</>
+				);
+			case "3":
+				return (
+					<div className="">
+						<Dropdown>
+							<DropdownTrigger>
+								<Button variant="solid"> - Please select API Type</Button>
+							</DropdownTrigger>
+							<DropdownMenu
+								className="border border-white"
+								onAction={(key) => {
+									const item = data.api_type?.find(
+										(o: reason) => o.value === key
+									);
+									setApiTypes([...apiTypes, item]);
+								}}
+								items={data.api_type}
+							>
+								{(type: api_type) => {
+									return (
+										<DropdownItem
+											className="border border-white p-2"
+											key={type.value}
+										>
+											{type.type}
+										</DropdownItem>
+									);
+								}}
+							</DropdownMenu>
+						</Dropdown>
+						{apiTypes.length > 0 &&
+							apiTypes.map((type) => {
+								// type.id == data.
+								return (
+									<div key={type.id} className="bg-green-700 w-2/3 h-64">
+										{type.reasons.map((r) => {
+											return (
+												<p className="bg-orange-500" key={r.id}>
+													{r.value + ": " + r.value}
+												</p>
+											);
+										})}
+									</div>
+								);
+							})}
+						<div className="bg-orange-500 w-auto h-auto">
+							{data.api_type.reasons &&
+								data.api_type.reasons.map((api: reason) => {
+									<p>{api.value}</p>;
+								})}
+						</div>
+					</div>
 				);
 			default:
 				return (
