@@ -21,7 +21,7 @@
                 "id": "api_type-31",
                 "value": "NSPrivacyAccessedAPICategoryFileTimestamp",
                 "type": "File timestamp APIs",
-                "Reasons": [
+                "reasons": [
                     {
                         "id": "file-1",
                         "key": "DDA9.1",
@@ -48,7 +48,7 @@
                 "id": "api_type-32",
                 "type": "System boot time APIs",
                 "value": "NSPrivacyAccessedAPICategorySystemBootTime",
-                "Reasons": [
+                "reasons": [
                     {
                         "id": "system-1",
                         "key": "35F9.1",
@@ -70,7 +70,7 @@
                 "id": "api_type-33",
                 "type": "Disk space APIs",
                 "value": "NSPrivacyAccessedAPICategoryDiskSpace",
-                "Reasons": [
+                "reasons": [
                     {
                         "id": "disk-1",
                         "key": "85F4.1",
@@ -97,7 +97,7 @@
                 "id": "api_type-34",
                 "type": "Active keyboard APIs",
                 "value": "NSPrivacyAccessedAPICategoryActiveKeyboards",
-                "Reasons": [
+                "reasons": [
                     {
                         "id": "keyboard-1",
                         "key": "3EC4.1",
@@ -114,7 +114,7 @@
                 "id": "api_type-35",
                 "type": "User defaults APIs",
                 "value": "NSPrivacyAccessedAPICategoryUserDefaults",
-                "Reasons": [
+                "reasons": [
                     {
                         "id": "defaults-1",
                         "key": "CA92.1",
