@@ -1,113 +1,211 @@
-import Image from "next/image";
+"use client";
+import datasource from "./datasource.json";
+import { useState } from "react";
+import MainHint from "./MainHint";
+import SubHint from "./SubHint";
+import { Checkbox } from "@nextui-org/react";
+
+interface ds {
+	id: string;
+	label: string;
+	hint: string;
+	api_type?:
+		| {
+				id: string;
+				value: string;
+				type: string;
+				Reasons: { id: string; key: string; value: string }[];
+		  }[]
+		| any;
+	btn_title?: any | undefined;
+	purpose?: any | undefined;
+}
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+	const [shouldShowMainHint, setshouldShowMainHint] = useState(false);
+	const [shouldShowSubHint, setshouldShowSubHint] = useState(false);
+	const [subHintID, setSubHintID] = useState("");
+	const [privacyTrackingEnabled, setPrivacyTrackingEnabled] = useState(false);
+	const [trackingDomains, setTrackingDomains] = useState([{ domain: "" }]);
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+	let handleChange = (i: number, e: any) => {
+		let newTrackingDomains = [...trackingDomains];
+		newTrackingDomains[i].domain = e.target.value;
+		setTrackingDomains(newTrackingDomains);
+	};
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+	let addTrackingDomains = () => {
+		let newTrackingDomains = [...trackingDomains];
+		newTrackingDomains.push({ domain: "" });
+		setTrackingDomains(newTrackingDomains);
+	};
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+	let removeTrackingDomains = (i: number) => {
+		let newTrackingDomains = [...trackingDomains];
+		newTrackingDomains.splice(i, 1);
+		setTrackingDomains(newTrackingDomains);
+	};
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+	function toggle() {
+		setshouldShowMainHint((shouldShowMainHint) => !shouldShowMainHint);
+	}
+	function enableMainHint() {
+		return <MainHint shouldShowMainHint={shouldShowMainHint} toggle={toggle} />;
+	}
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+	function enableSubHint(id: string, hintText: string) {
+		return shouldShowSubHint && id == subHintID ? (
+			<SubHint hintText={hintText} shouldShowSubHint={shouldShowSubHint} />
+		) : null;
+	}
+
+	function toggleSubHintView(id: string, hintext: string) {
+		setSubHintID(id);
+		setshouldShowSubHint(!shouldShowSubHint);
+	}
+	function showMainHintButton() {
+		return (
+			<div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm lg:flex">
+				<button
+					type="button"
+					onClick={toggle}
+					className="fixed left-0 top-0 flex w-full justify-center border-b border-cyan-500 p-8 rounded-full backdrop-blur-2xl lg:static lg:w-auto g:rounded-xl lg:border lg:bg-black-200 1g:p-4 "
+				>
+					What&apos;s all this about
+				</button>
+			</div>
+		);
+	}
+
+	function renderHintButton(id: string, hint: string) {
+		return (
+			<button
+				title="_"
+				type="button"
+				onClick={() => toggleSubHintView(id, hint)}
+				className="fixed left-0 top-0 flex justify-center pb-6 pt-8 backdrop-blur-2xl lg:static Ig:w-auto Lgrounded-xl lg:p-4 "
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24"
+					fill="currentColor"
+					className="w-6 h-6"
+				>
+					<path
+						fillRule="evenodd"
+						d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+						clipRule="evenodd"
+					/>
+				</svg>
+			</button>
+		);
+	}
+
+	function renderFormDetails(data: ds) {
+		switch (data.id) {
+			case "1":
+				return (
+					<button
+						onClick={() => setPrivacyTrackingEnabled(!privacyTrackingEnabled)}
+						type="button"
+						className="mt-5 flex flex-row gap-4 w-3/4"
+					>
+						<Checkbox
+							size="md"
+							color="default"
+							className=" w-6 h-6 border-2"
+							isSelected={privacyTrackingEnabled}
+							onValueChange={setPrivacyTrackingEnabled}
+						/>
+						<p className="h-auto w-auto text-white">{data.btn_title}</p>
+					</button>
+				);
+			case "2":
+				return (
+					<>
+						{trackingDomains.map((domain, index) => (
+							<div className="flex flex-row gap-4 w-full mb-5" key={index}>
+								{index ? (
+									<>
+										<input
+											className="w-2/3 text-black"
+											type="text"
+											name="name"
+											placeholder="Tracking domain"
+											value={domain.domain || ""}
+											onChange={(e) => handleChange(index, e)}
+										/>
+										<button
+											title="_"
+											type="button"
+											className="button remove"
+											onClick={() => removeTrackingDomains(index)}
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												viewBox="0 0 24 24"
+												fill="currentColor"
+												className="w-6 h-6"
+											>
+												<path
+													fillRule="evenodd"
+													d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+													clipRule="evenodd"
+												/>
+											</svg>
+										</button>
+									</>
+								) : null}
+							</div>
+						))}
+						<button
+							type="button"
+							onClick={addTrackingDomains}
+							className="fixed left-0 top-0 mt-5 flex w-full justify-center border border-white backdrop-blur-2xl lg:static lg:w-auto lg:rounded-full lg:border lgabg-black-200 lg:p-3 "
+						>
+							<p className="h-auto w-auto text-white">{data.btn_title}</p>
+						</button>
+					</>
+				);
+			default:
+				return (
+					<button
+						type="button"
+						onClick={toggle}
+						className="fixed left-0 top-0 mt-5 flex w-full justify-center border border-white backdrop-blur-2xl lg:static lg:w-auto lg:rounded-full lg:border lgabg-black-200 lg:p-3 "
+					>
+						<p className="h-auto w-auto text-white">{data.btn_title}</p>
+					</button>
+				);
+		}
+	}
+
+	function renderForm() {
+		return (
+			<>
+				<div className=" grid grid-cols-2 gap-20 p-10 border-b border-blue-50 transition-all ease-in-out duration-700 opacity-100 h-auto mt-10 max-w-7xl w-full bg-gradient-to-r from-cyan-500 to-blue-500">
+					{datasource.map((data) => {
+						return (
+							<div key={data.id}>
+								<div className="justify-between items-center flex">
+									<strong>{data.label}</strong>
+									{renderHintButton(data.id, data.hint)}
+								</div>
+								{enableSubHint(data.id, data.hint)}
+								{renderFormDetails(data)}
+							</div>
+						);
+					})}
+				</div>
+			</>
+		);
+	}
+
+	return (
+		<main className="flex h-full flex-col items-center justify-between p-24">
+			{!shouldShowMainHint && showMainHintButton()}
+			{shouldShowMainHint && enableMainHint()}
+			{renderForm()}
+		</main>
+	);
 }

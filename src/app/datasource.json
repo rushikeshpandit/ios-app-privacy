@@ -2,20 +2,20 @@
     {
         "id": "1",
         "label" : "Privacy tracking.",
-        "hint" : "NSPrivacyTracking Indicates whether your app or third-party SDK uses data for tracking as defined under the App Tracking Transparency framework. For more information, see User Privacy and Data Use.",
+        "hint" : "<div><p><span>NSPrivacyTracking</span></br> </br></p> <p>Indicates whether your app or third-party SDK uses data for tracking as defined under the App Tracking Transparency framework. For more information, see <a href=\"https://developer.apple.com/app-store/user-privacy-and-data-use\" target=\"_blank\">User Privacy and Data Use</a>.</p>/div>",
         "btn_title": "Your app uses data for tracking"
     },
     {
         "id": "2",
         "label" : "Tracking domains.",
-        "hint" : "NSPrivacyTrackingDomains A list of the internet domains your app or third-party SDK connects to that engage in tracking. If the user has not granted tracking permission through the App Tracking Transparency framework, network requests to these domains fail and your app receives an error. If you set NSPrivacyTracking to true then you need to provide at least one internet domain in NSPrivacyTrackingDomains; otherwise, you can provide zero or more domains.",
+        "hint" : "<div><p><span>NSPrivacyTrackingDomains</span></br> </br></p><p>A list of the internet domains your app or third-party SDK connects to that engage in tracking. If the user has not granted tracking permission through the App Tracking Transparency framework, network requests to these domains tall and your app receives an error.< br> </br></p><p>If you set <span>NSPrivacyTracking</span> to true then you need to provide at least one internet domain in NSPrivacyTrackingDomains; otherwise, you can provide zero or more domains. </p>/div>",
         "btn_title": "Add tracking domain"
     },
     {
         "id": "3",
-        "label" : "/'Required Reason/' APIs.",
-        "hint" : "NSPrivacyAccessedAPITypes An array of dictionaries that describe the API types your app or third-party SDK accesses that have been designated as APIs that require reasons to access. For information on the keys and values to use in the dictionaries, see Describing use of required reason API.",
-        "btn_title": "Add /'Required Reason/' API type",
+        "label" : "'Required Reason' APIs.",
+        "hint" : "<div><p><span>NSPrivacyAccessedAPITypes</span></br> </br></p><p>An array of dictionaries that describe the API types your app or third-party SDK accesses that have been designated as APIS that require reasons to access. For information on the keys and values to use in the dictionaries, see <a href=\"https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required _reason_api\" target=\"_blank\">Describing use of required reason API</a>.</p></div>",
+        "btn_title": "Add 'Required Reason' API type    ",
         "api_type" : [
             {
                 "id": "api_type-31",
@@ -142,7 +142,7 @@
     {
         "id": "4",
         "label" : "Collected data types.",
-        "hint" : "NSPrivacyCollectedDataTypes An array of dictionaries that describes the data types your app or third-party SDK collects. For information on the keys and values to use in the dictionaries, see Describing data use in privacy manifests.",
+        "hint" : "<div><p><span>NSPrivacyCollectedDataTypes</span></br> </br>/p><p> An array of dictionaries that describes the data types your app or third-party SDK collects. For information on the keys and values to use in the dictionaries, see <a href=\"https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_data_use_in_privacy_manifests\" target=\"_blank\">Describing data use in privacy manifests</a>.</p>/div>",
         "btn_title": "Add collected data type",
         "api_type" : [
             {
