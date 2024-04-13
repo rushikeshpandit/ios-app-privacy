@@ -1,21 +1,17 @@
 "use client";
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
+import { Checkbox } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import datasource from "./datasource.json";
-import { useState } from "react";
 import MainHint from "./MainHint";
 import SubHint from "./SubHint";
-import { Checkbox } from "@nextui-org/react";
-import {
-	Dropdown,
-	DropdownTrigger,
-	DropdownMenu,
-	DropdownItem,
-	Button,
-} from "@nextui-org/react";
 
 interface reason {
 	id: string;
 	key: string;
 	value: string;
+	selected: boolean;
 }
 
 interface api_type {
@@ -33,6 +29,30 @@ interface ds {
 	purpose?: any | undefined;
 }
 
+interface option {
+	id: string;
+	key: string;
+	label: string;
+	selected: boolean;
+}
+
+interface api_type_one {
+	id: string;
+	value: string;
+	type: string;
+	options: option[];
+}
+
+interface ds_one {
+	id: string;
+	label: string;
+	hint: string;
+	api_type?: api_type_one[] | any;
+	btn_title?: any | undefined;
+	purpose?: option[] | undefined;
+	intension?: option[] | undefined;
+}
+
 export default function Home() {
 	const [shouldShowMainHint, setshouldShowMainHint] = useState(false);
 	const [shouldShowSubHint, setshouldShowSubHint] = useState(false);
@@ -40,7 +60,11 @@ export default function Home() {
 	const [privacyTrackingEnabled, setPrivacyTrackingEnabled] = useState(false);
 	const [trackingDomains, setTrackingDomains] = useState([{ domain: "" }]);
 	const [apiTypes, setApiTypes] = useState<api_type[]>([]);
-	const [reasons, setReasons] = useState<reason[]>([]);
+
+	useEffect(() => {
+		const val = datasource[2].api_type as api_type[];
+		setApiTypes(val);
+	}, []);
 
 	let handleChange = (i: number, e: any) => {
 		let newTrackingDomains = [...trackingDomains];
@@ -61,6 +85,7 @@ export default function Home() {
 	function toggle() {
 		setshouldShowMainHint((shouldShowMainHint) => !shouldShowMainHint);
 	}
+
 	function enableMainHint() {
 		return <MainHint shouldShowMainHint={shouldShowMainHint} toggle={toggle} />;
 	}
@@ -75,6 +100,23 @@ export default function Home() {
 		setSubHintID(id);
 		setshouldShowSubHint(!shouldShowSubHint);
 	}
+
+	function updateApiTypes(api_id: string, reason_id: string) {
+		var api_to_update = apiTypes.find((o) => o.id === api_id);
+		var index_to_replace = apiTypes.findIndex((o) => o.id === api_id);
+		var reason_to_update = api_to_update?.reasons.find(
+			(o) => o.id === reason_id
+		);
+		reason_to_update!.selected = !reason_to_update!.selected;
+		var updated_reasons = api_to_update?.reasons.map((o) =>
+			o.id === reason_to_update?.id ? reason_to_update : o
+		);
+		api_to_update!.reasons = updated_reasons!;
+		let a_t = [...apiTypes];
+		a_t[index_to_replace] = api_to_update!;
+		setApiTypes(a_t);
+	}
+
 	function showMainHintButton() {
 		return (
 			<div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm lg:flex">
@@ -182,53 +224,55 @@ export default function Home() {
 			case "3":
 				return (
 					<div className="">
-						<Dropdown>
-							<DropdownTrigger>
-								<Button variant="solid"> - Please select API Type</Button>
-							</DropdownTrigger>
-							<DropdownMenu
-								className="border border-white"
-								onAction={(key) => {
-									const item = data.api_type?.find(
-										(o: reason) => o.value === key
-									);
-									setApiTypes([...apiTypes, item]);
-								}}
-								items={data.api_type}
-							>
-								{(type: api_type) => {
-									return (
-										<DropdownItem
-											className="border border-white p-2"
-											key={type.value}
-										>
-											{type.type}
-										</DropdownItem>
-									);
-								}}
-							</DropdownMenu>
-						</Dropdown>
-						{apiTypes.length > 0 &&
-							apiTypes.map((type) => {
-								// type.id == data.
-								return (
-									<div key={type.id} className="bg-green-700 w-2/3 h-64">
-										{type.reasons.map((r) => {
-											return (
-												<p className="bg-orange-500" key={r.id}>
-													{r.value + ": " + r.value}
-												</p>
-											);
-										})}
-									</div>
-								);
-							})}
-						<div className="bg-orange-500 w-auto h-auto">
-							{data.api_type.reasons &&
-								data.api_type.reasons.map((api: reason) => {
-									<p>{api.value}</p>;
-								})}
-						</div>
+						{apiTypes.map((type: api_type) => {
+							return (
+								<Disclosure key={type.id}>
+									{({ open }) => (
+										<div className="m-4">
+											<Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-1 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+												<span>{type.type}</span>
+												<ChevronUpIcon
+													className={`${
+														open ? "rotate-180 transform" : ""
+													} h-5 w-5 text-purple-500`}
+												/>
+											</Disclosure.Button>
+
+											<Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+												{type.reasons.map((r: reason) => {
+													return (
+														<button
+															onClick={() => updateApiTypes(type.id, r.id)}
+															type="button"
+															className="mt-5 gap-4 w-full flex flex-row justify-start"
+															key={r.id}
+														>
+															<Checkbox
+																size="md"
+																color="default"
+																className="w-6 h-6 border-2"
+																isSelected={r.selected}
+																onValueChange={() =>
+																	updateApiTypes(type.id, r.id)
+																}
+															/>
+															<div className="">
+																<p className="h-auto w-auto | text-white text-start font-light">
+																	<strong className="underlineunderline-offset-4">
+																		{r.key}
+																	</strong>{" "}
+																	: {r.value}
+																</p>
+															</div>
+														</button>
+													);
+												})}
+											</Disclosure.Panel>
+										</div>
+									)}
+								</Disclosure>
+							);
+						})}
 					</div>
 				);
 			default:
