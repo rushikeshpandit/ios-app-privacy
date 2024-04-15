@@ -169,49 +169,49 @@
                     {
                         "id": "contact-1",
                         "label": "Name",
-                        "key": "NSPrivacyCollectedDataTypelabel",
+                        "value": "NSPrivacyCollectedDataTypeName",
                         "selected": false
                     },
                     {
                         "id": "contact-2",
                         "label": "Email address",
-                        "key": "NSPrivacyCollectedDataTypeEmailAddress",
+                        "value": "NSPrivacyCollectedDataTypeEmailAddress",
                         "selected": false
                     },
                     {
                         "id": "contact-3",
                         "label": "Phone number",
-                        "key": "NSPrivacyCollectedDataTypePhoneNumber",
+                        "value": "NSPrivacyCollectedDataTypePhoneNumber",
                         "selected": false
                     },
                     {
                         "id": "contact-4",
                         "label": "Physical address",
-                        "key": "NSPrivacyCollectedDataTypePhysicalAddress",
+                        "value": "NSPrivacyCollectedDataTypePhysicalAddress",
                         "selected": false
                     },
                     {
                         "id": "contact-5",
                         "label": "Other user contact info",
-                        "key": "NSPrivacyCollectedDataTypeOtherUserContactInfo",
+                        "value": "NSPrivacyCollectedDataTypeOtherUserContactInfo",
                         "selected": false
                     }
                 ]
             },
             {
                 "id": "collected-42",
-                "label": "Health &amp; fitness",
+                "label": "Health & fitness",
                 "options": [
                     {
                         "id": "health-1",
                         "label": "Health",
-                        "key": "NSPrivacyCollectedDataTypeHealth",
+                        "value": "NSPrivacyCollectedDataTypeHealth",
                         "selected": false
                     },
                     {
                         "id": "health-2",
                         "label": "Fitness",
-                        "key": "NSPrivacyCollectedDataTypeFitness",
+                        "value": "NSPrivacyCollectedDataTypeFitness",
                         "selected": false
                     }
                 ]
@@ -223,19 +223,19 @@
                     {
                         "id": "financial-1",
                         "label": "Payment info",
-                        "key": "NSPrivacyCollectedDataTypePaymentInfo",
+                        "value": "NSPrivacyCollectedDataTypePaymentInfo",
                         "selected": false
                     },
                     {
                         "id": "financial-2",
                         "label": "Credit info",
-                        "key": "NSPrivacyCollectedDataTypeCreditInfo",
+                        "value": "NSPrivacyCollectedDataTypeCreditInfo",
                         "selected": false
                     },
                     {
                         "id": "financial-3",
                         "label": "Other financial info",
-                        "key": "NSPrivacyCollectedDataTypeOtherFinancialInfo",
+                        "value": "NSPrivacyCollectedDataTypeOtherFinancialInfo",
                         "selected": false
                     }
                 ]
@@ -247,13 +247,13 @@
                     {
                         "id": "location-1",
                         "label": "Precise location",
-                        "key": "NSPrivacyCollectedDataTypePreciseLocation",
+                        "value": "NSPrivacyCollectedDataTypePreciseLocation",
                         "selected": false
                     },
                     {
                         "id": "location-2",
                         "label": "Coarse location",
-                        "key": "NSPrivacyCollectedDataTypeCoarseLocation",
+                        "value": "NSPrivacyCollectedDataTypeCoarseLocation",
                         "selected": false
                     }
                 ]
@@ -265,7 +265,7 @@
                     {
                         "id": "sensitive-1",
                         "label": "Sensitive info",
-                        "key": "NSPrivacyCollectedDataTypeSensitiveInfo",
+                        "value": "NSPrivacyCollectedDataTypeSensitiveInfo",
                         "selected": false
                     }
                 ]
@@ -277,7 +277,7 @@
                     {
                         "id": "contact-1",
                         "label": "Contacts",
-                        "key": "NSPrivacyCollectedDataTypeContacts",
+                        "value": "NSPrivacyCollectedDataTypeContacts",
                         "selected": false
                     }
                 ]
@@ -289,37 +289,37 @@
                     {
                         "id": "user-1",
                         "label": "Emails or text messages",
-                        "key": "NSPrivacyCollectedDataTypeEmailsOrTextMessages",
+                        "value": "NSPrivacyCollectedDataTypeEmailsOrTextMessages",
                         "selected": false
                     },
                     {
                         "id": "user-2",
                         "label": "Photos or videos",
-                        "key": "NSPrivacyCollectedDataTypePhotosOrVideos",
+                        "value": "NSPrivacyCollectedDataTypePhotosorVideos",
                         "selected": false
                     },
                     {
                         "id": "user-3",
                         "label": "Audio data",
-                        "key": "NSPrivacyCollectedDataTypeAudioData",
+                        "value": "NSPrivacyCollectedDataTypeAudioData",
                         "selected": false
                     },
                     {
                         "id": "user-4",
                         "label": "Gameplay content",
-                        "key": "NSPrivacyCollectedDataTypeGameplayContent",
+                        "value": "NSPrivacyCollectedDataTypeGameplayContent",
                         "selected": false
                     },
                     {
                         "id": "user-5",
                         "label": "Customer support",
-                        "key": "NSPrivacyCollectedDataTypeCustomerSupport",
+                        "value": "NSPrivacyCollectedDataTypeCustomerSupport",
                         "selected": false
                     },
                     {
                         "id": "user-6",
                         "label": "Other user content",
-                        "key": "NSPrivacyCollectedDataTypeOtherUserContent",
+                        "value": "NSPrivacyCollectedDataTypeOtherUserContent",
                         "selected": false
                     }
                 ]
@@ -331,7 +331,7 @@
                     {
                         "id": "browsing-1",
                         "label": "Browsing history",
-                        "key": "NSPrivacyCollectedDataTypeBrowsingHistory",
+                        "value": "NSPrivacyCollectedDataTypeBrowsingHistory",
                         "selected": false
                     }
                 ]
@@ -343,7 +343,7 @@
                     {
                         "id": "searching-1",
                         "label": "Search history",
-                        "key": "NSPrivacyCollectedDataTypeSearchHistory",
+                        "value": "NSPrivacyCollectedDataTypeSearchHistory",
                         "selected": false
                     }
                 ]
@@ -355,13 +355,13 @@
                     {
                         "id": "identifier-1",
                         "label": "User ID",
-                        "key": "NSPrivacyCollectedDataTypeUserID",
+                        "value": "NSPrivacyCollectedDataTypeUserID",
                         "selected": false
                     },
                     {
                         "id": "identifier-2",
                         "label": "Device ID",
-                        "key": "NSPrivacyCollectedDataTypeDeviceID",
+                        "value": "NSPrivacyCollectedDataTypeDeviceID",
                         "selected": false
                     }
                 ]
@@ -373,7 +373,7 @@
                     {
                         "id": "purchase-1",
                         "label": "Purchase history",
-                        "key": "NSPrivacyCollectedDataTypePurchaseHistory",
+                        "value": "NSPrivacyCollectedDataTypePurchaseHistory",
                         "selected": false
                     }
                 ]
@@ -385,19 +385,19 @@
                     {
                         "id": "usage-1",
                         "label": "Product interaction",
-                        "key": "NSPrivacyCollectedDataTypeProductInteraction",
+                        "value": "NSPrivacyCollectedDataTypeProductInteraction",
                         "selected": false
                     },
                     {
                         "id": "usage-2",
                         "label": "Advertising data",
-                        "key": "NSPrivacyCollectedDataTypeAdvertisingData",
+                        "value": "NSPrivacyCollectedDataTypeAdvertisingData",
                         "selected": false
                     },
                     {
                         "id": "usage-3",
                         "label": "Other usage data",
-                        "key": "NSPrivacyCollectedDataTypeOtherUsageData",
+                        "value": "NSPrivacyCollectedDataTypeOtherUsageData",
                         "selected": false
                     }
                 ]
@@ -409,19 +409,19 @@
                     {
                         "id": "diagnostic-1",
                         "label": "Crash data",
-                        "key": "NSPrivacyCollectedDataTypeCrashData",
+                        "value": "NSPrivacyCollectedDataTypeCrashData",
                         "selected": false
                     },
                     {
                         "id": "diagnostic-2",
                         "label": "Performance data",
-                        "key": "NSPrivacyCollectedDataTypePerformanceData",
+                        "value": "NSPrivacyCollectedDataTypePerformanceData",
                         "selected": false
                     },
                     {
                         "id": "diagnostic-3",
                         "label": "Other diagnostic data",
-                        "key": "NSPrivacyCollectedDataTypeOtherDiagnosticData",
+                        "value": "NSPrivacyCollectedDataTypeOtherDiagnosticData",
                         "selected": false
                     }
                 ]
@@ -433,7 +433,7 @@
                     {
                         "id": "surrounding-1",
                         "label": "Environment scanning",
-                        "key": "NSPrivacyCollectedDataTypeEnvironmentScanning",
+                        "value": "NSPrivacyCollectedDataTypeEnvironmentScanning",
                         "selected": false
                     }
                 ]
@@ -445,13 +445,13 @@
                     {
                         "id": "body-1",
                         "label": "Hands",
-                        "key": "NSPrivacyCollectedDataTypeHands",
+                        "value": "NSPrivacyCollectedDataTypeHands",
                         "selected": false
                     },
                     {
                         "id": "body-2",
                         "label": "Head",
-                        "key": "NSPrivacyCollectedDataTypeHead",
+                        "value": "NSPrivacyCollectedDataTypeHead",
                         "selected": false
                     }
                 ]
@@ -463,7 +463,7 @@
                     {
                         "id": "other-1",
                         "label": "Other data types",
-                        "key": "NSPrivacyCollectedDataTypeOtherDataTypes",
+                        "value": "NSPrivacyCollectedDataTypeOtherDataTypes",
                         "selected": false
                     }
                 ]
@@ -473,13 +473,13 @@
             {
                 "id": "intension-1",
                 "label": "Linked to user's identity",
-                "value": "NSPrivacyCollectdedDataTypeTracking",
+                "value": "NSPrivacyCollectedDataTypeLinked",
                 "selected": false
             },
             {
                 "id": "intension-2",
                 "label": "Used for tracking",
-                "value": "NSPrivacyCollectdedDataTypeLinked",
+                "value": "NSPrivacyCollectedDataTypeTracking",
                 "selected": false
             }
         ],
