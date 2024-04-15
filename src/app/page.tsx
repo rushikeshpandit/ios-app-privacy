@@ -50,6 +50,7 @@ interface intension_type {
 }
 
 interface collected_type {
+	value?: string | undefined;
 	name?: string | undefined;
 	option?: options | undefined;
 	purpose?: intension_type[] | undefined;
@@ -108,6 +109,55 @@ export default function Home() {
 
 	let downloadFile = () => {
 		// Handle download file here
+		console.log(
+			"🚀 ~ downloadFile ~ collected_data_types:",
+			collected_data_types
+		);
+		console.log(
+			"🚀 ~ downloadFile ~ reasons_final_value:",
+			reasons_final_value
+		);
+
+		const final_collected_data_type = collected_data_types
+			.map((cdt) => {
+				if (cdt.option?.selected) {
+					const final_purpose = cdt.purpose
+						?.map((purpose) => {
+							if (purpose.selected) {
+								return purpose;
+							} else {
+								return null;
+							}
+						})
+						.filter(function (el) {
+							return el !== null;
+						});
+					return { ...cdt, purpose: final_purpose };
+				} else {
+					return null;
+				}
+			})
+			.filter(function (el) {
+				return el !== null;
+			});
+		console.log(
+			"🚀 ~ downloadFile ~ final_collected_data_type:",
+			final_collected_data_type
+		);
+
+		let final_domain = trackingDomains
+			.map((domain) => {
+				return domain.domain !== "" ? domain.domain : "";
+			})
+			.filter(function (el) {
+				return el !== "";
+			});
+
+		let final_json = {
+			NSPrivacyTracking: privacyTrackingEnabled,
+			NSPrivacyTrackingDomains: final_domain,
+			// NSPrivacyCollectedDataTypes:
+		};
 	};
 
 	let updateCollectedDataTypeIntension = (
@@ -117,9 +167,9 @@ export default function Home() {
 	) => {
 		if (is_purpose) {
 			const updated_cdt = collected_data_types.map((cdt) => {
-				if (cdt.option?.id === ct.option?.id) {
-					const updated_purpose = cdt.purpose!.map((purpose) => {
-						if (purpose.id === id) {
+				if (cdt.option?.id.toLowerCase() === ct.option?.id.toLowerCase()) {
+					const updated_purpose = cdt.purpose?.map((purpose) => {
+						if (purpose.id.toLowerCase() === id.toLowerCase()) {
 							return { ...purpose, selected: !purpose.selected };
 						}
 						return purpose;
@@ -127,7 +177,7 @@ export default function Home() {
 					return {
 						...cdt,
 						purpose: updated_purpose,
-						option: { ...cdt.option, selected: !cdt.option!.selected },
+						option: { ...cdt.option, selected: true },
 					};
 				}
 				return cdt;
@@ -136,9 +186,9 @@ export default function Home() {
 			setCollected_data_type(updated_cdt as collected_type[]);
 		} else {
 			const updated_cdt = collected_data_types.map((cdt) => {
-				if (cdt.option?.id === ct.option?.id) {
+				if (cdt.option?.id.toLowerCase() === ct.option?.id.toLowerCase()) {
 					const updated_intension = cdt.intension?.map((intension) => {
-						if (intension.id === id) {
+						if (intension.id.toLowerCase() === id.toLowerCase()) {
 							return { ...intension, selected: !intension.selected };
 						}
 						return intension;
@@ -146,7 +196,7 @@ export default function Home() {
 					return {
 						...cdt,
 						intension: updated_intension,
-						option: { ...cdt.option, selected: !cdt.option!.selected },
+						option: { ...cdt.option, selected: true },
 					};
 				}
 				return cdt;
@@ -459,7 +509,7 @@ export default function Home() {
 				<div className=" z-10 max-w-5xl w-full items-end justify-end font-mono text-sm lg:flex">
 					<button
 						type="button"
-						onClick={toggle}
+						onClick={downloadFile}
 						className="fixed  flex w-full justify-center border-b border-cyan-500 p-8 rounded-full backdrop-blur-2xl lg:static lg:w-auto g:rounded-xl lg:border lg:bg-black-200 1g:p-4 "
 					>
 						<strong> Download PrivacyInfo.xcprivacy</strong>
@@ -491,3 +541,7 @@ export default function Home() {
 		</main>
 	);
 }
+
+// Ref link
+// https://developer.apple.com/documentation/bundleresources/privacy_manifest_files#4284009
+// https://medium.com/@emt.joshhart/a-comprehensive-guide-to-apples-new-privacy-manifest-requirements-for-ios-app-developers-d004dc47ad35
