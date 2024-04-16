@@ -8,6 +8,7 @@ import MainHint from "./MainHint";
 import SubHint from "./SubHint";
 var plist = require("plist");
 import { Analytics } from "@vercel/analytics/react";
+import Contact from "./contact/page";
 
 interface reason {
 	id: string;
@@ -583,6 +584,7 @@ export default function Home() {
 				data-y_margin="18"
 				defer
 			></script>
+			<Contact />
 			<Analytics />
 		</main>
 	);
