@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import datasource from "./datasource.json";
 import MainHint from "./MainHint";
 import SubHint from "./SubHint";
+var plist = require("plist");
 
 interface reason {
 	id: string;
@@ -50,6 +51,7 @@ interface intension_type {
 }
 
 interface collected_type {
+	value?: string | undefined;
 	name?: string | undefined;
 	option?: options | undefined;
 	purpose?: intension_type[] | undefined;
@@ -107,7 +109,86 @@ export default function Home() {
 	};
 
 	let downloadFile = () => {
-		// Handle download file here
+		const final_reasons_final_value = reasons_final_value
+			.map((reason) => {
+				var reason_array: string[] = [];
+				reason.reasons.map((r) => {
+					if (r.selected) {
+						reason_array.push(r.key);
+					}
+				});
+				if (reason_array.length > 0) {
+					var final = {
+						NSPrivacyAccessedAPIType: reason.value,
+						NSPrivacyAccessedAPITypeReasons: reason_array,
+					};
+					return final;
+				} else {
+					return null;
+				}
+			})
+			.filter(function (el) {
+				return el !== null;
+			});
+		const final_collected_data_type = collected_data_types
+			.map((cdt) => {
+				if (cdt.option!.selected) {
+					var final = { NSPrivacyCollectedDataType: cdt.option?.value };
+					cdt.intension!.map((intension) => {
+						var key = intension.value;
+						final = { ...final, [key]: intension.selected };
+						return intension;
+					});
+					var purpose_array: string[] = [];
+					cdt.purpose?.map((purpose) => {
+						if (purpose.selected) {
+							purpose_array.push(purpose.value);
+						}
+						return purpose;
+					});
+
+					if (purpose_array.length > 0) {
+						var key: string = "NSPrivacyCollectedDataTypePurposes";
+						final = { ...final, [key]: purpose_array };
+						return final;
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			})
+			.filter(function (el) {
+				return el !== null;
+			});
+		let final_domain = trackingDomains
+			.map((domain) => {
+				return domain.domain !== "" ? domain.domain : "";
+			})
+			.filter(function (el) {
+				return el !== "";
+			});
+		let final_json = {
+			NSPrivacyTracking: privacyTrackingEnabled,
+			NSPrivacyTrackingDomains: final_domain,
+			NSPrivacyCo11ectedDataTypes: final_collected_data_type,
+			NSPrivacyAccessedAPITypes: final_reasons_final_value,
+		};
+		var final_xml = plist.build(final_json);
+		var filename = "PrivayInfo.xcprivacy";
+		var pom = document.createElement("a");
+		var bb = new Blob([final_xml], { type: "application/xml" });
+
+		pom.setAttribute("href", window.URL.createObjectURL(bb));
+		pom.setAttribute("download", filename);
+
+		pom.dataset.downloadurl = ["application/xml", pom.download, pom.href].join(
+			":"
+		);
+		pom.draggable = true;
+		pom.classList.add("dragout");
+
+		pom.click();
 	};
 
 	let updateCollectedDataTypeIntension = (
@@ -117,9 +198,9 @@ export default function Home() {
 	) => {
 		if (is_purpose) {
 			const updated_cdt = collected_data_types.map((cdt) => {
-				if (cdt.option?.id === ct.option?.id) {
-					const updated_purpose = cdt.purpose!.map((purpose) => {
-						if (purpose.id === id) {
+				if (cdt.option?.id.toLowerCase() === ct.option?.id.toLowerCase()) {
+					const updated_purpose = cdt.purpose?.map((purpose) => {
+						if (purpose.id.toLowerCase() === id.toLowerCase()) {
 							return { ...purpose, selected: !purpose.selected };
 						}
 						return purpose;
@@ -127,7 +208,7 @@ export default function Home() {
 					return {
 						...cdt,
 						purpose: updated_purpose,
-						option: { ...cdt.option, selected: !cdt.option!.selected },
+						option: { ...cdt.option, selected: true },
 					};
 				}
 				return cdt;
@@ -136,9 +217,9 @@ export default function Home() {
 			setCollected_data_type(updated_cdt as collected_type[]);
 		} else {
 			const updated_cdt = collected_data_types.map((cdt) => {
-				if (cdt.option?.id === ct.option?.id) {
+				if (cdt.option?.id.toLowerCase() === ct.option?.id.toLowerCase()) {
 					const updated_intension = cdt.intension?.map((intension) => {
-						if (intension.id === id) {
+						if (intension.id.toLowerCase() === id.toLowerCase()) {
 							return { ...intension, selected: !intension.selected };
 						}
 						return intension;
@@ -146,7 +227,7 @@ export default function Home() {
 					return {
 						...cdt,
 						intension: updated_intension,
-						option: { ...cdt.option, selected: !cdt.option!.selected },
+						option: { ...cdt.option, selected: true },
 					};
 				}
 				return cdt;
@@ -459,7 +540,7 @@ export default function Home() {
 				<div className=" z-10 max-w-5xl w-full items-end justify-end font-mono text-sm lg:flex">
 					<button
 						type="button"
-						onClick={toggle}
+						onClick={downloadFile}
 						className="fixed  flex w-full justify-center border-b border-cyan-500 p-8 rounded-full backdrop-blur-2xl lg:static lg:w-auto g:rounded-xl lg:border lg:bg-black-200 1g:p-4 "
 					>
 						<strong> Download PrivacyInfo.xcprivacy</strong>
@@ -491,3 +572,7 @@ export default function Home() {
 		</main>
 	);
 }
+
+// Ref link
+// https://developer.apple.com/documentation/bundleresources/privacy_manifest_files#4284009
+// https://medium.com/@emt.joshhart/a-comprehensive-guide-to-apples-new-privacy-manifest-requirements-for-ios-app-developers-d004dc47ad35

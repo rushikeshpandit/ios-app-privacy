@@ -275,7 +275,7 @@
                 "label": "Contacts",
                 "options": [
                     {
-                        "id": "contact-1",
+                        "id": "contacts-1",
                         "label": "Contacts",
                         "value": "NSPrivacyCollectedDataTypeContacts",
                         "selected": false
