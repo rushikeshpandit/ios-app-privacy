@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import datasource from "./datasource.json";
 import MainHint from "./MainHint";
 import SubHint from "./SubHint";
+var plist = require("plist");
 
 interface reason {
 	id: string;
@@ -108,31 +109,20 @@ export default function Home() {
 	};
 
 	let downloadFile = () => {
-		// Handle download file here
-		console.log(
-			"🚀 ~ downloadFile ~ collected_data_types:",
-			collected_data_types
-		);
-		console.log(
-			"🚀 ~ downloadFile ~ reasons_final_value:",
-			reasons_final_value
-		);
-
-		const final_collected_data_type = collected_data_types
-			.map((cdt) => {
-				if (cdt.option?.selected) {
-					const final_purpose = cdt.purpose
-						?.map((purpose) => {
-							if (purpose.selected) {
-								return purpose;
-							} else {
-								return null;
-							}
-						})
-						.filter(function (el) {
-							return el !== null;
-						});
-					return { ...cdt, purpose: final_purpose };
+		const final_reasons_final_value = reasons_final_value
+			.map((reason) => {
+				var reason_array: string[] = [];
+				reason.reasons.map((r) => {
+					if (r.selected) {
+						reason_array.push(r.key);
+					}
+				});
+				if (reason_array.length > 0) {
+					var final = {
+						NSPrivacyAccessedAPIType: reason.value,
+						NSPrivacyAccessedAPITypeReasons: reason_array,
+					};
+					return final;
 				} else {
 					return null;
 				}
@@ -140,11 +130,37 @@ export default function Home() {
 			.filter(function (el) {
 				return el !== null;
 			});
-		console.log(
-			"🚀 ~ downloadFile ~ final_collected_data_type:",
-			final_collected_data_type
-		);
+		const final_collected_data_type = collected_data_types
+			.map((cdt) => {
+				if (cdt.option!.selected) {
+					var final = { NSPrivacyCollectedDataType: cdt.option?.value };
+					cdt.intension!.map((intension) => {
+						var key = intension.value;
+						final = { ...final, [key]: intension.selected };
+						return intension;
+					});
+					var purpose_array: string[] = [];
+					cdt.purpose?.map((purpose) => {
+						if (purpose.selected) {
+							purpose_array.push(purpose.value);
+						}
+						return purpose;
+					});
 
+					if (purpose_array.length > 0) {
+						var key: string = "NSPrivacyCollectedDataTypePurposes";
+						final = { ...final, [key]: purpose_array };
+						return final;
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			})
+			.filter(function (el) {
+				return el !== null;
+			});
 		let final_domain = trackingDomains
 			.map((domain) => {
 				return domain.domain !== "" ? domain.domain : "";
@@ -152,12 +168,27 @@ export default function Home() {
 			.filter(function (el) {
 				return el !== "";
 			});
-
 		let final_json = {
 			NSPrivacyTracking: privacyTrackingEnabled,
 			NSPrivacyTrackingDomains: final_domain,
-			// NSPrivacyCollectedDataTypes:
+			NSPrivacyCo11ectedDataTypes: final_collected_data_type,
+			NSPrivacyAccessedAPITypes: final_reasons_final_value,
 		};
+		var final_xml = plist.build(final_json);
+		var filename = "PrivayInfo.xcprivacy";
+		var pom = document.createElement("a");
+		var bb = new Blob([final_xml], { type: "application/xml" });
+
+		pom.setAttribute("href", window.URL.createObjectURL(bb));
+		pom.setAttribute("download", filename);
+
+		pom.dataset.downloadurl = ["application/xml", pom.download, pom.href].join(
+			":"
+		);
+		pom.draggable = true;
+		pom.classList.add("dragout");
+
+		pom.click();
 	};
 
 	let updateCollectedDataTypeIntension = (
