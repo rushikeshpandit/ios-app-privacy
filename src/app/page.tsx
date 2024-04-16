@@ -176,7 +176,7 @@ export default function Home() {
 			NSPrivacyAccessedAPITypes: final_reasons_final_value,
 		};
 		var final_xml = plist.build(final_json);
-		var filename = "PrivayInfo.xcprivacy";
+		var filename = "PrivacyInfo.xcprivacy";
 		var pom = document.createElement("a");
 		var bb = new Blob([final_xml], { type: "application/xml" });
 
