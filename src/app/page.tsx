@@ -7,6 +7,7 @@ import datasource from "./datasource.json";
 import MainHint from "./MainHint";
 import SubHint from "./SubHint";
 var plist = require("plist");
+import { Analytics } from "@vercel/analytics/react";
 
 interface reason {
 	id: string;
@@ -572,7 +573,3 @@ export default function Home() {
 		</main>
 	);
 }
-
-// Ref link
-// https://developer.apple.com/documentation/bundleresources/privacy_manifest_files#4284009
-// https://medium.com/@emt.joshhart/a-comprehensive-guide-to-apples-new-privacy-manifest-requirements-for-ios-app-developers-d004dc47ad35
