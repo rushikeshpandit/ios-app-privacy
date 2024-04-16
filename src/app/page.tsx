@@ -570,6 +570,7 @@ export default function Home() {
 			{!shouldShowMainHint && showMainHintButton()}
 			{shouldShowMainHint && enableMainHint()}
 			{renderForm()}
+			<Analytics />
 		</main>
 	);
 }
