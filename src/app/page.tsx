@@ -570,6 +570,19 @@ export default function Home() {
 			{!shouldShowMainHint && showMainHintButton()}
 			{shouldShowMainHint && enableMainHint()}
 			{renderForm()}
+			<script
+				data-name="BMC-Widget"
+				data-cfasync="false"
+				src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+				data-id="rushikeshpandit"
+				data-description="Support me on Buy me a coffee!"
+				data-message="Fueling creativity, one sip at a time! ☕️ Your support means the world to me. Thanks a latte for considering buying me a coffee! Together, let's brew up some amazing projects and keep the inspiration flowing. Cheers to you!"
+				data-color="#5F7FFF"
+				data-position="Right"
+				data-x_margin="18"
+				data-y_margin="18"
+				defer
+			></script>
 			<Analytics />
 		</main>
 	);
