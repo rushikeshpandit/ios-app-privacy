@@ -1,11 +1,7 @@
 "use client";
 import { Transition } from "@headlessui/react";
 import parse from "html-react-parser";
-
-interface SubHintProps {
-	hintText: string;
-	shouldShowSubHint: boolean;
-}
+import { SubHintProps } from "./Interfaces";
 
 const SubHint: React.FC<SubHintProps> = (props: SubHintProps) => {
 	function showHint(hintText: string): any {
