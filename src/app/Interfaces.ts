@@ -80,3 +80,9 @@ export interface ReasonViewProps {
 	type: api_type;
 	updateApiTypes: (api_id: string, reason_id: string) => void;
 }
+
+export interface HintButtonProps {
+	toggleSubHintView: (id: string, hint: string) => void;
+	id: string;
+	hint: string;
+}

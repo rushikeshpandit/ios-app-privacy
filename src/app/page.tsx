@@ -1,29 +1,23 @@
 "use client";
-import { Disclosure } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { Checkbox } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import datasource from "./datasource.json";
-import MainHint from "./MainHint";
-import SubHint from "./SubHint";
-var plist = require("plist");
 import { Analytics } from "@vercel/analytics/react";
+import { useEffect, useState } from "react";
+import CollectedDataTypeView from "./CollectedDataTypeView";
 import Contact from "./contact/page";
-import MainHintButton from "./MainHintButton";
+import datasource from "./datasource.json";
 import HintButton from "./HintButton";
 import {
-	reason,
 	api_type,
-	ds,
-	options,
-	options_type,
-	intension_type,
 	collected_type,
+	ds,
+	options_type
 } from "./Interfaces";
-import CollectedDataTypeView from "./CollectedDataTypeView";
+import MainHint from "./MainHint";
+import MainHintButton from "./MainHintButton";
 import PrivacyTrackingView from "./PrivacyTrackingView";
-import TrackingDomainView from "./TrackingDomainView";
 import ReasonsView from "./ReasonsView";
+import SubHint from "./SubHint";
+import TrackingDomainView from "./TrackingDomainView";
+var plist = require("plist");
 
 export default function Home() {
 	const [shouldShowMainHint, setshouldShowMainHint] = useState(false);

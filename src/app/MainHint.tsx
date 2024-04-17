@@ -1,8 +1,8 @@
 "use client";
 
-import hint from "./hint.json";
-import parse from "html-react-parser";
 import { Transition } from "@headlessui/react";
+import parse from "html-react-parser";
+import hint from "./hint.json";
 import { MainHintProps } from "./Interfaces";
 
 const MainHint: React.FC<MainHintProps> = (props: MainHintProps) => {

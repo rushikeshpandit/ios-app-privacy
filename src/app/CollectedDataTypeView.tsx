@@ -1,8 +1,8 @@
 "use client";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { collected_type, intension_type } from "./Interfaces";
 import { Checkbox } from "@nextui-org/react";
+import { collected_type, intension_type } from "./Interfaces";
 
 interface CollectedDataTypeViewProps {
 	updateCollectedDataTypeIntension: (

@@ -7,6 +7,7 @@ const SubHint: React.FC<SubHintProps> = (props: SubHintProps) => {
 	function showHint(hintText: string): any {
 		return parse(hintText);
 	}
+
 	return (
 		<Transition
 			show={props.shouldShowSubHint}

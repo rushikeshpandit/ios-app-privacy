@@ -1,10 +1,7 @@
 "use client";
 
-interface HintButtonProps {
-	toggleSubHintView: (id: string, hint: string) => void;
-	id: string;
-	hint: string;
-}
+import { HintButtonProps } from "./Interfaces";
+
 const HintButton: React.FC<HintButtonProps> = (props: HintButtonProps) => {
 	return (
 		<button
