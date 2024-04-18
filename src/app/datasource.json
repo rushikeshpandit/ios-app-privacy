@@ -521,5 +521,9 @@
                 "selected": false
             }
         ]
+    },
+    {
+        "id": "5",
+        "btn_title": "Download PrivacyInfo.xcprivacy"
     }
 ]

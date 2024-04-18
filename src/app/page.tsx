@@ -1,64 +1,22 @@
 "use client";
-import { Disclosure } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { Checkbox } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import datasource from "./datasource.json";
-import MainHint from "./MainHint";
-import SubHint from "./SubHint";
-var plist = require("plist");
 import { Analytics } from "@vercel/analytics/react";
+import "keen-slider/keen-slider.min.css";
+import { useKeenSlider } from "keen-slider/react";
+import { useEffect, useState } from "react";
+import { AdaptiveHeight } from "./AdaptiveHeight";
+import CollectedDataTypeView from "./CollectedDataTypeView";
 import Contact from "./contact/page";
-
-interface reason {
-	id: string;
-	key: string;
-	value: string;
-	selected: boolean;
-}
-
-interface api_type {
-	id: string;
-	value: string;
-	type: string;
-	reasons: reason[];
-}
-interface ds {
-	id: string;
-	label: string;
-	hint: string;
-	api_type?: api_type[] | any;
-	btn_title?: any | undefined;
-	purpose?: any | undefined;
-}
-
-interface options {
-	id: string;
-	value: string;
-	label: string;
-	selected: boolean;
-}
-
-interface options_type {
-	id: string;
-	label: string;
-	options: options[];
-}
-
-interface intension_type {
-	id: string;
-	value: string;
-	label: string;
-	selected: boolean;
-}
-
-interface collected_type {
-	value?: string | undefined;
-	name?: string | undefined;
-	option?: options | undefined;
-	purpose?: intension_type[] | undefined;
-	intension?: intension_type[] | undefined;
-}
+import datasource from "./datasource.json";
+import HintButton from "./HintButton";
+import { api_type, collected_type, ds, options_type } from "./Interfaces";
+import MainHint from "./MainHint";
+import MainHintButton from "./MainHintButton";
+import PrivacyTrackingView from "./PrivacyTrackingView";
+import ReasonsView from "./ReasonsView";
+import SubHint from "./SubHint";
+import TrackingDomainView from "./TrackingDomainView";
+import Arrow from "./Arrow";
+var plist = require("plist");
 
 export default function Home() {
 	const [shouldShowMainHint, setshouldShowMainHint] = useState(false);
@@ -72,6 +30,20 @@ export default function Home() {
 	const [collected_data_types, setCollected_data_type] = useState<
 		collected_type[]
 	>([]);
+	const [currentSlide, setCurrentSlide] = useState(0);
+	const [loaded, setLoaded] = useState(false);
+	const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
+		{
+			initial: 0,
+			slideChanged(s) {
+				setCurrentSlide(s.track.details.rel);
+			},
+			created() {
+				setLoaded(true);
+			},
+		},
+		[AdaptiveHeight]
+	);
 
 	useEffect(() => {
 		const val = datasource[2].api_type as api_type[];
@@ -277,121 +249,34 @@ export default function Home() {
 	}
 
 	function showMainHintButton() {
-		return (
-			<div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm lg:flex">
-				<button
-					type="button"
-					onClick={toggle}
-					className="fixed left-0 top-0 flex w-full justify-center border-b border-cyan-500 p-8 rounded-full backdrop-blur-2xl lg:static lg:w-auto g:rounded-xl lg:border lg:bg-black-200 1g:p-4 "
-				>
-					What&apos;s all this about
-				</button>
-			</div>
-		);
+		return <MainHintButton toggle={toggle} />;
 	}
 
 	function renderHintButton(id: string, hint: string) {
 		return (
-			<button
-				title="?"
-				type="button"
-				onClick={() => toggleSubHintView(id, hint)}
-				className="fixed left-0 top-0 flex justify-center pb-6 pt-8 backdrop-blur-2xl lg:static Ig:w-auto Lgrounded-xl lg:p-4 "
-			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					fill="currentColor"
-					className="w-6 h-6"
-				>
-					<path
-						fillRule="evenodd"
-						d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-						clipRule="evenodd"
-					/>
-				</svg>
-			</button>
+			<HintButton toggleSubHintView={toggleSubHintView} id={id} hint={hint} />
 		);
 	}
 
 	function renderCollectedDataType(ct: collected_type) {
 		return (
-			<Disclosure key={ct.name}>
-				{({ open }) => (
-					<div className="m-4">
-						<Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-1 px-4 py-2 text-left text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
-							<span>{ct.name + " : " + ct.option!.label}</span>
-							<ChevronUpIcon
-								className={`${
-									open ? "" : "rotate-180 transform"
-								} h-5 w-5 text-white`}
-							/>
-						</Disclosure.Button>
+			<CollectedDataTypeView
+				key={ct.name}
+				ct={ct}
+				updateCollectedDataTypeIntension={updateCollectedDataTypeIntension}
+			/>
+		);
+	}
 
-						<Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-							{ct.intension!.map((i: intension_type) => {
-								return (
-									<button
-										onClick={() => {
-											updateCollectedDataTypeIntension(ct, i.id, false);
-										}}
-										type="button"
-										className="mt-5 gap-4 w-full flex flex-row justify-start"
-										key={i.id}
-									>
-										<Checkbox
-											size="md"
-											color="default"
-											className="w-6 h-6 border-2"
-											isSelected={i.selected}
-											onValueChange={() => {
-												updateCollectedDataTypeIntension(ct, i.id, false);
-											}}
-										/>
-										<div className="">
-											<p className="h-auto w-auto | text-white text-start font-light">
-												<strong className="underlineunderline-offset-4">
-													{i.label}
-												</strong>
-											</p>
-										</div>
-									</button>
-								);
-							})}
-							<hr className="my-12 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10" />
-							{ct.purpose!.map((p: intension_type) => {
-								return (
-									<button
-										onClick={() => {
-											updateCollectedDataTypeIntension(ct, p.id, true);
-										}}
-										type="button"
-										className="mt-5 gap-4 w-full flex flex-row justify-start"
-										key={p.id}
-									>
-										<Checkbox
-											size="md"
-											color="default"
-											className="w-6 h-6 border-2"
-											isSelected={p.selected}
-											onValueChange={() => {
-												updateCollectedDataTypeIntension(ct, p.id, true);
-											}}
-										/>
-										<div className="">
-											<p className="h-auto w-auto | text-white text-start font-light">
-												<strong className="underlineunderline-offset-4">
-													{p.label}
-												</strong>
-											</p>
-										</div>
-									</button>
-								);
-							})}
-						</Disclosure.Panel>
-					</div>
-				)}
-			</Disclosure>
+	function renderCommonFormDetails(data: ds) {
+		return (
+			<>
+				<div className="justify-between items-center flex">
+					<strong>{data.label}</strong>
+					{renderHintButton(data.id, data.hint)}
+				</div>
+				{enableSubHint(data.id, data.hint)}
+			</>
 		);
 	}
 
@@ -399,128 +284,87 @@ export default function Home() {
 		switch (data.id) {
 			case "1":
 				return (
-					<button
-						onClick={() => setPrivacyTrackingEnabled(!privacyTrackingEnabled)}
-						type="button"
-						className="mt-5 flex flex-row gap-4 w-3/4"
-					>
-						<Checkbox
-							size="md"
-							color="default"
-							className=" w-6 h-6 border-2"
-							isSelected={privacyTrackingEnabled}
-							onValueChange={setPrivacyTrackingEnabled}
+					<div className="keen-slider__slide transition-transform   h-auto flex flex-col">
+						{renderCommonFormDetails(data)}
+
+						<PrivacyTrackingView
+							setPrivacyTrackingEnabled={setPrivacyTrackingEnabled}
+							privacyTrackingEnabled={privacyTrackingEnabled}
+							title={data.btn_title}
 						/>
-						<p className="h-auto w-auto text-white">{data.btn_title}</p>
-					</button>
+					</div>
 				);
 			case "2":
 				return (
-					<>
-						{trackingDomains.map((domain, index) => (
-							<div className="flex flex-row gap-4 w-full mb-5" key={index}>
-								{index ? (
-									<>
-										<input
-											className="w-2/3 text-black"
-											type="text"
-											name="name"
-											placeholder="Tracking domain"
-											value={domain.domain || ""}
-											onChange={(e) => handleChange(index, e)}
+					<div className="keen-slider__slide transition-transform h-auto flex flex-col">
+						<div>
+							{renderCommonFormDetails(data)}
+
+							{trackingDomains.map((domain, index) => (
+								<div className="flex flex-row gap-4 w-full mb-5" key={index}>
+									{index ? (
+										<TrackingDomainView
+											key={index}
+											domain={domain.domain}
+											index={index}
+											handleChange={handleChange}
+											removeTrackingDomains={removeTrackingDomains}
 										/>
-										<button
-											title="?"
-											type="button"
-											className="button remove"
-											onClick={() => removeTrackingDomains(index)}
-										>
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												viewBox="0 0 24 24"
-												fill="currentColor"
-												className="w-6 h-6"
-											>
-												<path
-													fillRule="evenodd"
-													d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
-													clipRule="evenodd"
-												/>
-											</svg>
-										</button>
-									</>
-								) : null}
-							</div>
-						))}
-						<button
-							type="button"
-							onClick={addTrackingDomains}
-							className="fixed left-0 top-0 mt-5 flex w-full justify-center border border-white backdrop-blur-2xl lg:static lg:w-auto lg:rounded-full lg:border lgabg-black-200 lg:p-3 "
-						>
-							<p className="h-auto w-auto text-white">{data.btn_title}</p>
-						</button>
-					</>
+									) : null}
+								</div>
+							))}
+							<button
+								type="button"
+								onClick={addTrackingDomains}
+								className="fixed left-0 top-0 mt-5 flex w-full justify-center border border-white backdrop-blur-2xl lg:static lg:w-auto lg:rounded-full lg:border lgabg-black-200 lg:p-3 "
+							>
+								<p className="h-auto w-auto text-white">{data.btn_title}</p>
+							</button>
+						</div>
+					</div>
 				);
 			case "3":
 				return (
-					<div className="">
-						{reasons_final_value.map((type: api_type) => {
-							return (
-								<Disclosure key={type.id}>
-									{({ open }) => (
-										<div className="m-4">
-											<Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-1 px-4 py-2 text-left text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
-												<span>{type.type}</span>
-												<ChevronUpIcon
-													className={`${
-														open ? "" : "rotate-180 transform"
-													} h-5 w-5 text-white`}
-												/>
-											</Disclosure.Button>
-
-											<Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-												{type.reasons.map((r: reason) => {
-													return (
-														<button
-															onClick={() => updateApiTypes(type.id, r.id)}
-															type="button"
-															className="mt-5 gap-4 w-full flex flex-row justify-start"
-															key={r.id}
-														>
-															<Checkbox
-																size="md"
-																color="default"
-																className="w-6 h-6 border-2"
-																isSelected={r.selected}
-																onValueChange={() =>
-																	updateApiTypes(type.id, r.id)
-																}
-															/>
-															<div className="">
-																<p className="h-auto w-auto | text-white text-start font-light">
-																	<strong className="underlineunderline-offset-4">
-																		{r.key}
-																	</strong>{" "}
-																	: {r.value}
-																</p>
-															</div>
-														</button>
-													);
-												})}
-											</Disclosure.Panel>
-										</div>
-									)}
-								</Disclosure>
-							);
-						})}
+					<div className="keen-slider__slide transition-transform h-auto flex flex-col">
+						{renderCommonFormDetails(data)}
+						<div className="grid grid-cols-1 w-auto h-auto gap-2 overflow-auto">
+							{reasons_final_value.map((type: api_type) => {
+								return (
+									<ReasonsView
+										key={type.id}
+										type={type}
+										updateApiTypes={updateApiTypes}
+									/>
+								);
+							})}
+						</div>
 					</div>
 				);
 			case "4":
 				return (
-					<div className=" w-auto h-auto flex flex-col gap-4">
-						{collected_data_types.map((cdt: collected_type) => {
-							return <>{renderCollectedDataType(cdt)}</>;
-						})}
+					<div className="keen-slider__slide transition-transform h-auto flex flex-col">
+						{renderCommonFormDetails(data)}
+
+						<div className="grid grid-cols-3 w-auto h-screen gap-2 overflow-auto">
+							{collected_data_types.map((cdt: collected_type) => {
+								return <>{renderCollectedDataType(cdt)}</>;
+							})}
+						</div>
+					</div>
+				);
+			case "5":
+				return (
+					<div className="keen-slider__slide transition-transform h-auto flex flex-col justify-center ">
+						<div className=" z-10 w-auto h-auto items-center justify-center font-mono text-sm lg:flex">
+							<button
+								type="button"
+								onClick={downloadFile}
+								className="fixed  flex w-auto h-auto justify-center border-b border-white p-10 rounded-full backdrop-blur-2xl lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-black-200 lg:p-4 "
+							>
+								<strong>{data.btn_title}</strong>
+							</button>
+						</div>
+						<Contact />
 					</div>
 				);
 			default:
@@ -536,38 +380,52 @@ export default function Home() {
 		}
 	}
 
+	function renderPrevNextButtons() {
+		if (loaded && instanceRef.current) {
+			return (
+				<>
+					<Arrow
+						left
+						onClick={(e: any) =>
+							e.stopPropagation() || instanceRef.current?.prev()
+						}
+						disabled={currentSlide === 0}
+					/>
+
+					<Arrow
+						onClick={(e: any) =>
+							e.stopPropagation() || instanceRef.current?.next()
+						}
+						disabled={
+							currentSlide ===
+							instanceRef.current.track.details.slides.length - 1
+						}
+					/>
+				</>
+			);
+		} else {
+			return null;
+		}
+	}
+
 	function renderForm() {
 		return (
 			<>
-				<div className=" z-10 max-w-5xl w-full items-end justify-end font-mono text-sm lg:flex">
-					<button
-						type="button"
-						onClick={downloadFile}
-						className="fixed  flex w-full justify-center border-b border-cyan-500 p-8 rounded-full backdrop-blur-2xl lg:static lg:w-auto g:rounded-xl lg:border lg:bg-black-200 1g:p-4 "
-					>
-						<strong> Download PrivacyInfo.xcprivacy</strong>
-					</button>
+				<div className="h-auto justify-center flex flex-col items-center p-10 border-b border-blue-50 transition-all ease-in-out duration-700 opacity-100 mt-10 max-w-7xl w-full bg-gradient-to-r from-cyan-500 to-blue-500">
+					<div ref={sliderRef} className="keen-slider">
+						{datasource.map((data) => {
+							return <div key={data.id}>{renderFormDetails(data)}</div>;
+						})}
+					</div>
 				</div>
-				<div className=" grid grid-cols-2 gap-10 p-10 border-b border-blue-50 transition-all ease-in-out duration-700 opacity-100 h-auto mt-10 max-w-7xl w-full bg-gradient-to-r from-cyan-500 to-blue-500">
-					{datasource.map((data) => {
-						return (
-							<div key={data.id}>
-								<div className="justify-between items-center flex">
-									<strong>{data.label}</strong>
-									{renderHintButton(data.id, data.hint)}
-								</div>
-								{enableSubHint(data.id, data.hint)}
-								{renderFormDetails(data)}
-							</div>
-						);
-					})}
-				</div>
+
+				{renderPrevNextButtons()}
 			</>
 		);
 	}
 
 	return (
-		<main className="flex h-full flex-col items-center justify-between p-24">
+		<main className="flex h-auto flex-col items-center justify-between p-10">
 			{!shouldShowMainHint && showMainHintButton()}
 			{shouldShowMainHint && enableMainHint()}
 			{renderForm()}
@@ -584,7 +442,6 @@ export default function Home() {
 				data-y_margin="18"
 				defer
 			></script>
-			<Contact />
 			<Analytics />
 		</main>
 	);

@@ -1,13 +1,10 @@
 "use client";
 
-import hint from "./hint.json";
-import parse from "html-react-parser";
 import { Transition } from "@headlessui/react";
+import parse from "html-react-parser";
+import hint from "./hint.json";
+import { MainHintProps } from "./Interfaces";
 
-interface MainHintProps {
-	shouldShowMainHint: boolean;
-	toggle: (values: any) => void;
-}
 const MainHint: React.FC<MainHintProps> = (props: MainHintProps) => {
 	function showHint(isFirst: Boolean): any {
 		return parse(isFirst ? hint.page_one : hint.page_two);
