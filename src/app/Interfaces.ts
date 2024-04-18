@@ -86,3 +86,12 @@ export interface HintButtonProps {
 	id: string;
 	hint: string;
 }
+
+export interface CollectedDataTypeViewProps {
+	updateCollectedDataTypeIntension: (
+		ct: collected_type,
+		id: string,
+		is_purpose: boolean
+	) => void;
+	ct: collected_type;
+}

@@ -1,22 +1,21 @@
 "use client";
 import { Analytics } from "@vercel/analytics/react";
+import "keen-slider/keen-slider.min.css";
+import { useKeenSlider } from "keen-slider/react";
 import { useEffect, useState } from "react";
+import { AdaptiveHeight } from "./AdaptiveHeight";
 import CollectedDataTypeView from "./CollectedDataTypeView";
 import Contact from "./contact/page";
 import datasource from "./datasource.json";
 import HintButton from "./HintButton";
-import {
-	api_type,
-	collected_type,
-	ds,
-	options_type
-} from "./Interfaces";
+import { api_type, collected_type, ds, options_type } from "./Interfaces";
 import MainHint from "./MainHint";
 import MainHintButton from "./MainHintButton";
 import PrivacyTrackingView from "./PrivacyTrackingView";
 import ReasonsView from "./ReasonsView";
 import SubHint from "./SubHint";
 import TrackingDomainView from "./TrackingDomainView";
+import Arrow from "./Arrow";
 var plist = require("plist");
 
 export default function Home() {
@@ -31,6 +30,20 @@ export default function Home() {
 	const [collected_data_types, setCollected_data_type] = useState<
 		collected_type[]
 	>([]);
+	const [currentSlide, setCurrentSlide] = useState(0);
+	const [loaded, setLoaded] = useState(false);
+	const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
+		{
+			initial: 0,
+			slideChanged(s) {
+				setCurrentSlide(s.track.details.rel);
+			},
+			created() {
+				setLoaded(true);
+			},
+		},
+		[AdaptiveHeight]
+	);
 
 	useEffect(() => {
 		const val = datasource[2].api_type as api_type[];
@@ -248,9 +261,22 @@ export default function Home() {
 	function renderCollectedDataType(ct: collected_type) {
 		return (
 			<CollectedDataTypeView
+				key={ct.name}
 				ct={ct}
 				updateCollectedDataTypeIntension={updateCollectedDataTypeIntension}
 			/>
+		);
+	}
+
+	function renderCommonFormDetails(data: ds) {
+		return (
+			<>
+				<div className="justify-between items-center flex">
+					<strong>{data.label}</strong>
+					{renderHintButton(data.id, data.hint)}
+				</div>
+				{enableSubHint(data.id, data.hint)}
+			</>
 		);
 	}
 
@@ -258,57 +284,87 @@ export default function Home() {
 		switch (data.id) {
 			case "1":
 				return (
-					<PrivacyTrackingView
-						setPrivacyTrackingEnabled={setPrivacyTrackingEnabled}
-						privacyTrackingEnabled={privacyTrackingEnabled}
-						title={data.btn_title}
-					/>
+					<div className="keen-slider__slide transition-transform   h-auto flex flex-col">
+						{renderCommonFormDetails(data)}
+
+						<PrivacyTrackingView
+							setPrivacyTrackingEnabled={setPrivacyTrackingEnabled}
+							privacyTrackingEnabled={privacyTrackingEnabled}
+							title={data.btn_title}
+						/>
+					</div>
 				);
 			case "2":
 				return (
-					<>
-						{trackingDomains.map((domain, index) => (
-							<div className="flex flex-row gap-4 w-full mb-5" key={index}>
-								{index ? (
-									<TrackingDomainView
-										key={index}
-										domain={domain.domain}
-										index={index}
-										handleChange={handleChange}
-										removeTrackingDomains={removeTrackingDomains}
-									/>
-								) : null}
-							</div>
-						))}
-						<button
-							type="button"
-							onClick={addTrackingDomains}
-							className="fixed left-0 top-0 mt-5 flex w-full justify-center border border-white backdrop-blur-2xl lg:static lg:w-auto lg:rounded-full lg:border lgabg-black-200 lg:p-3 "
-						>
-							<p className="h-auto w-auto text-white">{data.btn_title}</p>
-						</button>
-					</>
+					<div className="keen-slider__slide transition-transform h-auto flex flex-col">
+						<div>
+							{renderCommonFormDetails(data)}
+
+							{trackingDomains.map((domain, index) => (
+								<div className="flex flex-row gap-4 w-full mb-5" key={index}>
+									{index ? (
+										<TrackingDomainView
+											key={index}
+											domain={domain.domain}
+											index={index}
+											handleChange={handleChange}
+											removeTrackingDomains={removeTrackingDomains}
+										/>
+									) : null}
+								</div>
+							))}
+							<button
+								type="button"
+								onClick={addTrackingDomains}
+								className="fixed left-0 top-0 mt-5 flex w-full justify-center border border-white backdrop-blur-2xl lg:static lg:w-auto lg:rounded-full lg:border lgabg-black-200 lg:p-3 "
+							>
+								<p className="h-auto w-auto text-white">{data.btn_title}</p>
+							</button>
+						</div>
+					</div>
 				);
 			case "3":
 				return (
-					<div className="">
-						{reasons_final_value.map((type: api_type) => {
-							return (
-								<ReasonsView
-									key={type.id}
-									type={type}
-									updateApiTypes={updateApiTypes}
-								/>
-							);
-						})}
+					<div className="keen-slider__slide transition-transform h-auto flex flex-col">
+						{renderCommonFormDetails(data)}
+						<div className="grid grid-cols-1 w-auto h-auto gap-2 overflow-auto">
+							{reasons_final_value.map((type: api_type) => {
+								return (
+									<ReasonsView
+										key={type.id}
+										type={type}
+										updateApiTypes={updateApiTypes}
+									/>
+								);
+							})}
+						</div>
 					</div>
 				);
 			case "4":
 				return (
-					<div className=" w-auto h-auto flex flex-col gap-4">
-						{collected_data_types.map((cdt: collected_type) => {
-							return <>{renderCollectedDataType(cdt)}</>;
-						})}
+					<div className="keen-slider__slide transition-transform h-auto flex flex-col">
+						{renderCommonFormDetails(data)}
+
+						<div className="grid grid-cols-3 w-auto h-screen gap-2 overflow-auto">
+							{collected_data_types.map((cdt: collected_type) => {
+								return <>{renderCollectedDataType(cdt)}</>;
+							})}
+						</div>
+					</div>
+				);
+			case "5":
+				return (
+					<div className="keen-slider__slide transition-transform h-auto flex flex-col justify-center ">
+						<div className=" z-10 w-auto h-auto items-center justify-center font-mono text-sm lg:flex">
+							<button
+								type="button"
+								onClick={downloadFile}
+								className="fixed  flex w-auto h-auto justify-center border-b border-white p-10 rounded-full backdrop-blur-2xl lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-black-200 lg:p-4 "
+							>
+								<strong>{data.btn_title}</strong>
+							</button>
+						</div>
+						<Contact />
 					</div>
 				);
 			default:
@@ -324,38 +380,52 @@ export default function Home() {
 		}
 	}
 
+	function renderPrevNextButtons() {
+		if (loaded && instanceRef.current) {
+			return (
+				<>
+					<Arrow
+						left
+						onClick={(e: any) =>
+							e.stopPropagation() || instanceRef.current?.prev()
+						}
+						disabled={currentSlide === 0}
+					/>
+
+					<Arrow
+						onClick={(e: any) =>
+							e.stopPropagation() || instanceRef.current?.next()
+						}
+						disabled={
+							currentSlide ===
+							instanceRef.current.track.details.slides.length - 1
+						}
+					/>
+				</>
+			);
+		} else {
+			return null;
+		}
+	}
+
 	function renderForm() {
 		return (
 			<>
-				<div className=" z-10 max-w-5xl w-full items-end justify-end font-mono text-sm lg:flex">
-					<button
-						type="button"
-						onClick={downloadFile}
-						className="fixed  flex w-full justify-center border-b border-cyan-500 p-8 rounded-full backdrop-blur-2xl lg:static lg:w-auto g:rounded-xl lg:border lg:bg-black-200 1g:p-4 "
-					>
-						<strong> Download PrivacyInfo.xcprivacy</strong>
-					</button>
+				<div className="h-auto justify-center flex flex-col items-center p-10 border-b border-blue-50 transition-all ease-in-out duration-700 opacity-100 mt-10 max-w-7xl w-full bg-gradient-to-r from-cyan-500 to-blue-500">
+					<div ref={sliderRef} className="keen-slider">
+						{datasource.map((data) => {
+							return <div key={data.id}>{renderFormDetails(data)}</div>;
+						})}
+					</div>
 				</div>
-				<div className=" grid grid-cols-2 gap-10 p-10 border-b border-blue-50 transition-all ease-in-out duration-700 opacity-100 h-auto mt-10 max-w-7xl w-full bg-gradient-to-r from-cyan-500 to-blue-500">
-					{datasource.map((data) => {
-						return (
-							<div key={data.id}>
-								<div className="justify-between items-center flex">
-									<strong>{data.label}</strong>
-									{renderHintButton(data.id, data.hint)}
-								</div>
-								{enableSubHint(data.id, data.hint)}
-								{renderFormDetails(data)}
-							</div>
-						);
-					})}
-				</div>
+
+				{renderPrevNextButtons()}
 			</>
 		);
 	}
 
 	return (
-		<main className="flex h-full flex-col items-center justify-between p-24">
+		<main className="flex h-auto flex-col items-center justify-between p-10">
 			{!shouldShowMainHint && showMainHintButton()}
 			{shouldShowMainHint && enableMainHint()}
 			{renderForm()}
@@ -372,7 +442,6 @@ export default function Home() {
 				data-y_margin="18"
 				defer
 			></script>
-			<Contact />
 			<Analytics />
 		</main>
 	);

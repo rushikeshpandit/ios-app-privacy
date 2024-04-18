@@ -5,8 +5,10 @@ import Image from "next/image";
 export default function Contact() {
 	return (
 		<div id="contact">
-			<div className="pt-16 h-auto container my-auto mx-auto bg-black items-center justify-evenly flex-col">
-				<h2 className="text-[#fff]  font-bold, text-2xl">Connect with me</h2>
+			<div className="pt-16 h-auto container my-auto mx-auto bg-gradient-to-r from-cyan-500 to-blue-500 items-center justify-evenly flex-col">
+				<h2 className="text-[#fff]  font-bold, text-2xl flex items-center justify-center">
+					Connect with me
+				</h2>
 				<div className="p-10 h-auto w-auto mx-auto flex flex-wrap items-center justify-center">
 					{hint.socials.map(({ link, icon, label }) => (
 						<div
